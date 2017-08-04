@@ -1,4 +1,3 @@
-import subprocess
 import libtorrent as lt
 from libtorrent import session
 import tempfile
@@ -27,7 +26,7 @@ class Bittorrent():
         ses = lt.session()
         handle = lt.add_magnet_uri(ses, magnet, generate_params(tempdir))
 
-        print("Downloading Metadata (this may take a while)")
+        print("Downloading Metadata of {}".format(magnet))
         while not handle.has_metadata():
             try:
                 sleep(1)
@@ -43,7 +42,7 @@ class Bittorrent():
         info_entry = {
             "trackers": [t.url for t in torinfo.trackers()],
             "name": torinfo.name(),
-            "magnet": magnet,
+            "link": magnet,
             "files": [f.path for f in torinfo.files()],
             "num_files": torinfo.num_files()
         }

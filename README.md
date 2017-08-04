@@ -9,8 +9,11 @@ you can find it again.
 
 After metadata is generated, the tool should download all of the data in the links provided.
 
-`python main.py --input input_file.txt`
+`python main.py --input input_file.txt` to generate the metadata-file.
+
+`python main.py --input input_file.txt --do-download` to download everything in the input-file.
 
 ## Installation
-Only tested with python 2.7
 run `./installer.sh`
+
+Only tested with python 2.7 on Ubuntu 16.04
