@@ -12,9 +12,9 @@ you can find it again.
 
 After metadata is generated, the tool should download all of the data in the links provided.
 
-`python main.py --input input_file.txt` to generate the metadata-file.
+`python back.py --input input_file.txt` to generate the metadata-file.
 
-`python main.py --input input_file.txt --do-download` to download everything in the input-file.
+`python back.py --input input_file.txt --do-download` to download everything in the input-file.
 
 ## Example input-file
 The input-file can be a combination of magnet- and youtube-links:
