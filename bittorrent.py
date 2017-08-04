@@ -35,7 +35,14 @@ class Bittorrent():
         self.ses.pause()
         print("Done")
         torinfo = handle.get_torrent_info()
-        return torinfo
+        info_entry = {
+            "trackers": [t.url for t in torinfo.trackers()],
+            "name": torinfo.name(),
+            "magnet": magnet,
+            "files": [f.path for f in torinfo.files()],
+            "num_files": torinfo.num_files()
+        }
+        return info_entry
 
     def download_magnetfiles(self):
         pass
