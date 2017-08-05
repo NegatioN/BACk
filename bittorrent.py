@@ -48,7 +48,7 @@ class Bittorrent():
         }
         return info_entry
 
-    def download_magnetfiles(self, magnet):
+    def download(self, magnet):
         ses = lt.session()
         handle = lt.add_magnet_uri(ses, magnet, generate_params(self.savepath))
 

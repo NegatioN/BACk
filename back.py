@@ -2,7 +2,7 @@ import bittorrent
 import json
 import os
 import argparse
-import youtube_dl
+import youtube
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', dest="input", default="imagined_input_file.txt", help='Input-file with list of links')
@@ -30,18 +30,6 @@ def add_metadata(metadata_entry, data_file):
         json.dump(data, lockfile, indent=4, sort_keys=True)
 
 
-# TODO consolidate metadata into a better common format?
-def youtube_metadata(ydl, url):
-    info = ydl.extract_info(url, download=False)
-    return {
-        "name": info["title"],
-        "duration": "{}s".format(info["duration"]),
-        "description": info["description"],
-        "upload_user": info["uploader"],
-        "link": url
-    }
-
-
 def main():
     metadata_path = config.metadata
     if not os.path.isfile(metadata_path):
@@ -51,8 +39,7 @@ def main():
     if not os.path.isdir(config.savepath):
         os.mkdir(config.savepath)
     bt = bittorrent.Bittorrent(config.savepath)
-    ydl_opts = {"outtmpl": "{}/%(title)s-%(id)s.%(ext)s".format(config.savepath)}
-    ydl = youtube_dl.YoutubeDL(ydl_opts)
+    yt = youtube.Youtube(config.savepath)
     with open(config.input, "r") as input_file:
         for line in input_file:
             name = line.strip()
@@ -60,12 +47,12 @@ def main():
                 if not metadata_exists(name, metadata_path):
                     add_metadata(bt.generate_metadata(name), metadata_path)
                 if config.do_download:
-                    bt.download_magnetfiles(name)
+                    bt.download(name)
             elif name.startswith("https://www.youtube"):
                 if not metadata_exists(name, metadata_path):
-                    add_metadata(youtube_metadata(ydl, name), metadata_path)
+                    add_metadata(yt.generate_metadata(name), metadata_path)
                 if config.do_download:
-                    ydl.download([name])
+                    yt.download(name)
 
 
 if __name__ == "__main__":
